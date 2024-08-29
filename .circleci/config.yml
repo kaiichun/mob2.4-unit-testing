@@ -2,19 +2,23 @@
 # Stacks detected: deps:java:.,tool:gradle:
 version: 2.1
 
+
 orbs:
   android: circleci/android@2.5.0
 
 jobs:
   run-unit-test:
-    executor: android/android-docker
-    tag: "2024.08"
+    executor:
+      name: android/android-docker
+      tag: "2024.08"
     steps:
       - checkout
       - android/restore-gradle-cache
+      - run:
+          name: Change permission
+          command: chmod +x ./gradlew
       - android/run-tests:
           test-command: ./gradlew testDebugUnitTest
-
       - android/save-gradle-cache
 
 workflows:
